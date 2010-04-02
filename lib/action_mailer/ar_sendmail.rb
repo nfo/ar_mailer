@@ -123,7 +123,7 @@ class ActionMailer::ARSendmail
                   create_timestamp.strftime '%a %b %d %H:%M:%S'
                 end
 
-      puts "%10d %8d %s  %s" % [email.id, size, created, email.from]
+      puts "%10s %8d %s  %s" % [email.id, size, created, email.from]
       if email.last_send_attempt > 0 then
         puts "Last send attempt: #{Time.at email.last_send_attempt}"
       end
@@ -378,10 +378,10 @@ class ActionMailer::ARSendmail
         begin
           res = session.send_message email.mail, email.from, email.to
           email.destroy
-          log "sent email %011d from %s to %s: %p" %
+          log "sent email %s from %s to %s: %p" %
                 [email.id, email.from, email.to, res]
         rescue Net::SMTPFatalError => e
-          log "5xx error sending email %d, removing from queue: %p(%s):\n\t%s" %
+          log "5xx error sending email %s, removing from queue: %p(%s):\n\t%s" %
                 [email.id, e.message, e.class, e.backtrace.join("\n\t")]
           email.destroy
           session.reset
@@ -391,7 +391,7 @@ class ActionMailer::ARSendmail
         rescue Net::SMTPUnknownError, Net::SMTPSyntaxError, TimeoutError, Timeout::Error => e
           email.last_send_attempt = Time.now.to_i
           email.save rescue nil
-          log "error sending email %d: %p(%s):\n\t%s" %
+          log "error sending email %s: %p(%s):\n\t%s" %
                 [email.id, e.message, e.class, e.backtrace.join("\n\t")]
           session.reset
         end

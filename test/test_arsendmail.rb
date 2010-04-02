@@ -287,7 +287,7 @@ Last send attempt: Thu Aug 10 11:40:05 %s 2006
     assert_equal 0, Net::SMTP.reset_called, 'Reset connection on SyntaxError'
 
     assert_equal '', out
-    assert_equal "sent email 00000000001 from from to to: \"queued\"\n", err
+    assert_equal "sent email 1 from from to to: \"queued\"\n", err
   end
 
   def test_deliver_not_called_when_no_emails
@@ -443,7 +443,7 @@ Last send attempt: Thu Aug 10 11:40:05 %s 2006
     assert_operator now, :<=, Email.records.first.last_send_attempt
 
     assert_equal '', out
-    assert_equal "error sending email 1: \"blah blah blah\"(Net::SMTPSyntaxError):\n\tone\n\ttwo\n\tthree\nsent email 00000000002 from from to to: \"queued\"\n", err
+    assert_equal "error sending email 1: \"blah blah blah\"(Net::SMTPSyntaxError):\n\tone\n\ttwo\n\tthree\nsent email 2 from from to to: \"queued\"\n", err
   end
 
   def test_deliver_timeout
